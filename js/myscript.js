@@ -12,10 +12,12 @@
 const playButton = document.getElementById("startGame");
 const game = document.getElementById("gameSquare");
 const start = document.getElementById("startMessage");
+const nBombs = 16;
+
 
 playButton.addEventListener("click", gameStart);
 
-// funzione usata per dare in output un quadrato con un numero scritto al suo interno e di una dimesione specifica in base alla difficoltà scelta
+// funzione usata per dare in output un quadrato con un numero scritto al suo interno e di una dimensione specifica in base alla difficoltà scelta
 function drawSquare(index, numSquares)
 {
     const square = document.createElement("div");
@@ -24,6 +26,22 @@ function drawSquare(index, numSquares)
     square.style.heigth = square.style.width;
     square.innerHTML = index + 1;
     return square;
+}
+
+// funzione usata per dare in output un array di bombe con indice diverso, prendendo in input il numero di caselle disponibili
+function createBombs(squareNumbers)
+{
+    let bombs = [];
+
+    while(bombs.length < 16)
+    {
+        const bomb = Math.floor(Math.random() * squareNumbers) + 1;
+        if(bombs.indexOf(bomb) < 0)
+        {
+            bombs.push(bomb);
+        }
+    }
+    return bombs;
 }
 
 // funzione usata per creare l'area di gioco
@@ -57,9 +75,17 @@ function gameStart()
         square.addEventListener("click" , function() 
             {
                 square.classList.add("bg-primary");
+                console.log(i+1);
             }
         )
         game.appendChild(square);
+    }
+
+    const bombs = createBombs(squareNumbers);
+
+    for(let i=0; i<bombs.length; i++)
+    {
+        
     }
 
     game.classList.remove("d-none");
