@@ -13,7 +13,7 @@ const playButton = document.getElementById("startGame");
 const game = document.getElementById("gameSquare");
 const start = document.getElementById("startMessage");
 const nBombs = 16;
-
+let counter = 0;
 
 playButton.addEventListener("click", gameStart);
 
@@ -48,6 +48,7 @@ function createBombs(squareNumbers)
 
 function gameStart()
 {
+    counter = 0;
     game.innerHTML = ``;
     const difficulty = document.getElementById("difficulty").value;
     let squareNumbers;
@@ -69,25 +70,49 @@ function gameStart()
     }
 
     // ciclo iterativo dove viene costruita l'area di gioco
-    for(let i=0 ; i<squareNumbers ; i++)
-    {
-        const square = drawSquare(i , squareForRow);
-        square.addEventListener("click" , function() 
-            {
-                square.classList.add("bg-primary");
-                console.log(i+1);
-            }
-        )
-        game.appendChild(square);
-    }
 
     const bombs = createBombs(squareNumbers);
-
-    for(let i=0; i<bombs.length; i++)
+    console.log("Lista delle bombe" + " " + bombs);
+    // inizio del ciclo iterativo atto a creare l'area di gioco
+    for(let i=0 ; i<squareNumbers ; i++)
     {
-        
+        // viene creato un quadrato con scritto all'interno il suo indice e con una grandezza definita dal numero di quadrati per riga
+        const square = drawSquare(i , squareForRow);
+        // inizio del ciclo iterativo atto a scorrere il vettore di bombe
+        for(let j=0; j<bombs.length; j++)
+        {
+            // se l'indice scritto all'interno del quadrato corrisponde ad un elemento del vettore bombs, l'elemento square viene convertito in una bomba
+            if(square.innerHTML == bombs[j])
+              {
+                square.addEventListener("click" , function() 
+                    {
+                        square.classList.add("bg-danger");
+                        endGame();
+                        square.removeEventListener
+                    }
+                )
+              }
+            //   altrimenti diventa un quadrato "sicuro"
+              else
+                {
+                    square.addEventListener("click" , function() 
+                    {
+                        square.classList.add("bg-primary");
+                    }
+                    )
+                }
+        }
+        // il quadrato viene aggiunto alla griglia
+        square.addEventListener("click" , function() {counter++;});
+        game.appendChild(square);
     }
-
     game.classList.remove("d-none");
     start.classList.add("d-none");
+}
+
+function endGame()
+{
+    game.classList.add("d-none");
+    start.classList.remove("d-none");
+    start.innerHTML = `<h3 class="text-danger"> Boom! Sei saltato in aria dopo ${counter} click! </h3> `
 }
