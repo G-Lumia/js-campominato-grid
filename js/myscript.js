@@ -73,6 +73,7 @@ function gameStart()
 
     const bombs = createBombs(squareNumbers);
     console.log("Lista delle bombe" + " " + bombs);
+    console.log(counter);
     // inizio del ciclo iterativo atto a creare l'area di gioco
     for(let i=0 ; i<squareNumbers ; i++)
     {
@@ -88,22 +89,22 @@ function gameStart()
                     {
                         square.classList.add("bg-danger");
                         endGame();
-                        square.removeEventListener
                     }
-                )
+                    , {once: true});
               }
+        }
             //   altrimenti diventa un quadrato "sicuro"
-              else
+              if(!square.classList.contains("bg-danger"))
                 {
                     square.addEventListener("click" , function() 
                     {
                         square.classList.add("bg-primary");
+                        counter++;
                     }
-                    )
+                    , {once: true});
                 }
-        }
+
         // il quadrato viene aggiunto alla griglia
-        square.addEventListener("click" , function() {counter++;});
         game.appendChild(square);
     }
     game.classList.remove("d-none");
@@ -112,7 +113,6 @@ function gameStart()
 
 function endGame()
 {
-    game.classList.add("d-none");
     start.classList.remove("d-none");
-    start.innerHTML = `<h3 class="text-danger"> Boom! Sei saltato in aria dopo ${counter} click! </h3> `
+    start.innerHTML = `<h3 class="text-danger"> Boom! Sei saltato in aria dopo ${counter + 1} click! </h3> `
 }
