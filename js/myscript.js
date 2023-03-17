@@ -54,6 +54,11 @@ function gameStart()
     for(let i=0 ; i<squareNumbers ; i++)
     {
         const square = drawSquare(i , squareForRow);
+        square.addEventListener("click" , function() 
+            {
+                square.classList.add("bg-primary");
+            }
+        )
         game.appendChild(square);
     }
 
